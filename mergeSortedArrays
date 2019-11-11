@@ -1,0 +1,67 @@
+	public int[] mergeSortedArrays(int[] left, int[] right) {
+		/*
+		 * Your Task: Define a recursive method yourself and use it here.
+		 */
+		
+		if(left.length == 0 && right.length == 0)
+		{
+			return left;
+		}
+    
+		if(left.length == 0)
+		{
+			int[] combined = new int[right.length];
+			return mergeSortedArraysHelper(left, right,combined,0,right.length-1,0);
+		}
+		
+		if(left.length >=1 && right.length >= 1)
+		{
+			int[] combined = new int[right.length + left.length];
+			return mergeSortedArraysHelper(left, right,combined,0,right.length-1,0);
+		}
+		return left;
+	}
+	
+	public int[] mergeSortedArraysHelper(int[] left, int[] right,int[] combined,int indexLeft, int indexRight, int indexCombined)
+	{
+		if(indexCombined >= combined.length)// outside combined Array 
+		{
+			return combined;
+		}	
+    
+		if(indexLeft >= left.length | indexRight == -1)// if outside left or right array
+		{
+			if(indexLeft >= left.length)
+			{
+				combined[indexCombined] = right[indexRight];
+				mergeSortedArraysHelper(left, right,combined, indexLeft, indexRight-1,indexCombined+1);
+			}
+			if(indexRight == -1)
+			{
+				combined[indexCombined] = left[indexLeft];
+				mergeSortedArraysHelper(left, right,combined, indexLeft+1, indexRight,indexCombined+1);
+			}
+		}	
+    
+		if(left.length == 0)//if left array is empty
+			combined[indexCombined] = right[indexRight];
+			mergeSortedArraysHelper(left, right,combined,0,indexRight-1,indexCombined+1);
+		}
+    
+		if(indexLeft < left.length) 
+		{
+			if(left[indexLeft] < right[indexRight])
+			{
+				combined[indexCombined] = left[indexLeft];
+				mergeSortedArraysHelper(left, right,combined, indexLeft+1, indexRight,indexCombined+1);
+			}	
+      
+			if(left[indexLeft] > right[indexRight])
+			{
+				combined[indexCombined] = right[indexRight];
+				mergeSortedArraysHelper(left, right,combined, indexLeft, indexRight-1,indexCombined+1);
+			}
+      
+		}
+		return combined;
+	}
